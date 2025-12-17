@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Shopping Cart - Thapa Gas and Kirana Pasal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/kirana/logo.jpeg') }}" alt="Thapa Gas & Kirana Logo" onerror="this.style.display='none'">
+                <h1>Thapa Gas & Kirana</h1>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav id="mainNav">
+                <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Home</a>
+                <a href="{{ url_for('index') }}#shop"><i class="fas fa-store"></i> Shop</a>
+                <a href="{{ url_for('index') }}#deals"><i class="fas fa-tag"></i> Deals</a>
+                <a href="{{ url_for('index') }}#new"><i class="fas fa-gift"></i> New Arrivals</a>
+                <a href="{{ url_for('index') }}#contact"><i class="fas fa-phone"></i> Contact</a>
+                <a href="{{ url_for('cart') }}" class="cart-link active">
+                    <div class="cart-icon-nav">
+                        <i class="fas fa-shopping-cart"></i>
+                        <div class="cart-count" id="cartCount">0</div>
+                    </div>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="cart-page-container">
+        <div class="cart-breadcrumb">
+            <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Home</a>
+            <span>/</span>
+            <span>Shopping Cart</span>
+        </div>
+
+        <h1 class="cart-page-title">Your Shopping Cart</h1>
+
+        <div class="cart-main-content">
+            <div class="cart-items-section" id="cartItemsSection">
+                <div class="empty-cart-message" id="emptyCartMessage">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h2>Your cart is empty</h2>
+                    <p>Add some products to get started!</p>
+                    <a href="{{ url_for('index') }}" class="continue-shopping-btn">
+                        <i class="fas fa-arrow-left"></i> Continue Shopping
+                    </a>
+                </div>
+
+                <div class="cart-items-list" id="cartItemsList"></div>
+            </div>
+
+            <div class="cart-summary-section">
+                <div class="order-summary">
+                    <h2>Order Summary</h2>
+                    
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="summarySubtotal">Rs. 0</span>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <span>Delivery Charge</span>
+                        <span id="summaryDelivery">Rs. 0</span>
+                    </div>
+                    
+                    <div class="summary-row discount-row">
+                        <span>Discount <span class="discount-badge" id="discountBadge" style="display: none;"></span></span>
+                        <span class="discount-amount" id="summaryDiscount">- Rs. 0</span>
+                    </div>
+                    
+                    <div class="summary-divider"></div>
+                    
+                    <div class="summary-row total-row">
+                        <span>Total</span>
+                        <span id="summaryTotal">Rs. 0</span>
+                    </div>
+
+                    <div class="location-section">
+                        <h3><i class="fas fa-map-marker-alt"></i> Delivery Location</h3>
+                        <div class="location-selector">
+                            <select id="districtSelect">
+                                <option value="">Select District</option>
+                                <option value="kathmandu">Kathmandu</option>
+                                <option value="lalitpur">Lalitpur</option>
+                                <option value="bhaktapur">Bhaktapur</option>
+                            </select>
+                            <select id="areaSelect" disabled>
+                                <option value="">Select Area</option>
+                            </select>
+                        </div>
+                        <button class="map-btn" id="mapBtn">
+                            <i class="fas fa-map"></i> Select on Map
+                        </button>
+                        <div class="selected-location" id="selectedLocation">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Please select your delivery location</span>
+                        </div>
+                    </div>
+
+                    <div class="delivery-info">
+                        <h3><i class="fas fa-truck"></i> Delivery Speed</h3>
+                        <div class="delivery-option-select">
+                            <label>
+                                <input type="radio" name="cartDelivery" value="express" checked>
+                                <div class="delivery-option-card">
+                                    <i class="fas fa-bolt"></i>
+                                    <div>
+                                        <strong>Express Delivery</strong>
+                                        <p>Within 30 minutes</p>
+                                    </div>
+                                </div>
+                            </label>
+                            <label>
+                                <input type="radio" name="cartDelivery" value="standard">
+                                <div class="delivery-option-card">
+                                    <i class="fas fa-clock"></i>
+                                    <div>
+                                        <strong>Standard Delivery</strong>
+                                        <p>1-2 hours</p>
+                                    </div>
+                                </div>
+                            </label>
+                            <label>
+                                <input type="radio" name="cartDelivery" value="scheduled">
+                                <div class="delivery-option-card">
+                                    <i class="fas fa-calendar"></i>
+                                    <div>
+                                        <strong>Scheduled</strong>
+                                        <p>Choose time</p>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- eSewa Payment Section -->
+                    <div class="payment-section">
+                        <button type="button" class="checkout-btn-full" id="checkoutBtn" onclick="proceedToCheckout()" disabled>
+                            <i class="fas fa-lock"></i> Pay with 
+                            <svg class="esewa-logo" viewBox="0 0 120 30" fill="white">
+                                <text x="0" y="20" font-size="18" font-weight="bold">eSewa</text>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <a href="{{ url_for('index') }}" class="continue-shopping-link">
+                        <i class="fas fa-arrow-left"></i> Continue Shopping
+                    </a>
+                </div>
+
+                <div class="promo-code-section">
+                    <h3>Have a promo code?</h3>
+                    <div class="promo-input-group">
+                        <input type="text" id="promoInput" placeholder="Enter code">
+                        <button onclick="applyPromo()">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Modal -->
+    <div id="mapModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Select Delivery Location</h2>
+                <button class="close-modal" id="closeMapModal">&times;</button>
+            </div>
+            <div id="map"></div>
+            <div class="map-info">
+                <strong>Selected Location:</strong>
+                <p id="mapSelectedLocation">Click on the map to select location</p>
+            </div>
+            <button class="confirm-location-btn" id="confirmLocationBtn">Confirm Location</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Koteshwor-32, Kathmandu</p>
+                <p><i class="fas fa-phone"></i> +977 98XXXXXXXX</p>
+                <p><i class="fas fa-envelope"></i> info@thapakirana.com</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms & Conditions</a>
+                <a href="#contact">Contact Us</a>
+                <a href="#about">About Us</a>
+            </div>
+            <div class="footer-section">
+                <h3>Opening Hours</h3>
+                <p>Monday - Saturday: 7:00 AM - 10:00 PM</p>
+                <p>Sunday: 8:00 AM - 9:00 PM</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Thapa Gas and Kirana Pasal. All rights reserved.</p>
+            <p>Designed with ❤️ in Nepal</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
