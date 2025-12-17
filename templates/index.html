@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Thapa Gas and Kirana Pasal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/kirana/logo.jpeg') }}" alt="Thapa Gas & Kirana Logo">
+                <h1>Thapa Gas & Kirana</h1>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav id="mainNav">
+                <a href="index.html" class="active"><i class="fas fa-home"></i> Home</a>
+                <a href="#shop"><i class="fas fa-store"></i> Shop</a>
+                <a href="#deals"><i class="fas fa-tag"></i> Deals</a>
+                <a href="#new"><i class="fas fa-gift"></i> New Arrivals</a>
+                <a href="#contact"><i class="fas fa-phone"></i> Contact</a>
+                <a href="{{ url_for('cart') }}" class="cart-link">
+                    <div class="cart-icon-nav">
+                        <i class="fas fa-shopping-cart"></i>
+                        <div class="cart-count" id="cartCount">0</div>
+                    </div>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="banner">
+        <h3>Delivery In Koteshwor-32</h3>
+        <p>Free delivery for orders above Rs. 500 | Delivery within 30 minutes</p>
+    </div>
+
+    <div class="sale-banner" id="saleBanner">
+        <i class="fas fa-fire"></i> HOT FRIDAY SALE! Get 20% OFF on all products today only! <i class="fas fa-fire"></i>
+    </div>
+
+    <div class="hero-slider" id="heroSlider">
+        <div class="slider-container">
+            <div class="slide active">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2>Super Weekend Sale</h2>
+                        <p>Up to 30% OFF on all beverages and snacks</p>
+                        <button class="shop-now-btn" onclick="scrollToProducts()">Shop Now</button>
+                    </div>
+                    <div class="slide-emoji">🎉🛒</div>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2>Fresh Breakfast Items</h2>
+                        <p>Start your day right with our premium breakfast range</p>
+                        <button class="shop-now-btn" onclick="scrollToProducts()">Explore</button>
+                    </div>
+                    <div class="slide-emoji">🥐☕</div>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2>Express Delivery</h2>
+                        <p>Get your orders delivered within 30 minutes</p>
+                        <button class="shop-now-btn" onclick="scrollToProducts()">Order Now</button>
+                    </div>
+                    <div class="slide-emoji">🚚⚡</div>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2>Chocolate Paradise</h2>
+                        <p>Indulge in our wide range of chocolates and treats</p>
+                        <button class="shop-now-btn" onclick="scrollToProducts()">Discover</button>
+                    </div>
+                    <div class="slide-emoji">🍫🍬</div>
+                </div>
+            </div>
+        </div>
+        <button class="slider-btn prev" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+        <button class="slider-btn next" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+        <div class="slider-dots" id="sliderDots"></div>
+    </div>
+
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="fas fa-filter"></i>
+    </button>
+
+    <div class="main-content">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>Filters</h3>
+                <button class="sidebar-close" id="sidebarClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="filter-section">
+                <h3>Filter by Price</h3>
+                <div class="filter-group">
+                    <label for="priceRange">Max Price: Rs. <span id="priceValue">3000</span></label>
+                    <input type="range" id="priceRange" min="0" max="3000" value="3000" step="50" />
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Categories</h3>
+                <div class="filter-group">
+                    <label><input type="checkbox" name="category" value="all" checked> All Products</label>
+                    <label><input type="checkbox" name="category" value="beverages"> Beverages</label>
+                    <label><input type="checkbox" name="category" value="snacks"> Snacks</label>
+                    <label><input type="checkbox" name="category" value="breakfast"> Breakfast</label>
+                    <label><input type="checkbox" name="category" value="chocolate"> Chocolate</label>
+                </div>
+            </div>
+
+            <div class="delivery-options">
+                <h4>Delivery Options</h4>
+                <div class="delivery-option">
+                    <input type="radio" id="express" name="delivery" value="express" checked>
+                    <label for="express">Express (30 min)</label>
+                </div>
+                <div class="delivery-option">
+                    <input type="radio" id="standard" name="delivery" value="standard">
+                    <label for="standard">Standard (1-2 hours)</label>
+                </div>
+                <div class="delivery-option">
+                    <input type="radio" id="scheduled" name="delivery" value="scheduled">
+                    <label for="scheduled">Scheduled</label>
+                </div>
+            </div>
+
+            <button class="clear-filters" id="clearFilters">Clear All Filters</button>
+        </aside>
+
+        <div class="container" id="productContainer">
+            <div class="product" data-price="120" data-category="beverages">
+                <div class="badge super">SUPER SALE</div>
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/kirana/redbull.jpg') }}" alt="Red Bull Energy Drink" />
+                </div>
+                <div class="product-info">
+                    <h3>Red Bull Energy Drink</h3>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <div class="price">Rs. 100 <span class="original-price">Rs. 120</span></div>
+                    <button class="add-to-cart" onclick="addToCart(1, 'Red Bull Energy Drink', 100, 'redbull')">
+                        <i class="fas fa-cart-plus"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <div class="product" data-price="80" data-category="snacks">
+                <div class="badge hot">HOT SALE</div>
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/kirana/lays.jpg') }}" alt="Lays Classic Chips" />
+                </div>
+                <div class="product-info">
+                    <h3>Lays Classic Chips</h3>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="price">Rs. 80</div>
+                    <button class="add-to-cart" onclick="addToCart(2, 'Lays Classic Chips', 80, 'lays')">
+                        <i class="fas fa-cart-plus"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <div class="product" data-price="299" data-category="breakfast">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/kirana/jam.jpg') }}" alt="Mixed Fruit Jam" />
+                </div>
+                <div class="product-info">
+                    <h3>Mixed Fruit Jam</h3>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="price">Rs. 299</div>
+                    <button class="add-to-cart" onclick="addToCart(3, 'Mixed Fruit Jam', 299, 'jam')">
+                        <i class="fas fa-cart-plus"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <div class="product" data-price="100" data-category="chocolate">
+                <div class="badge super">SUPER SALE</div>
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/kirana/snicker.jpg') }}" alt="Snickers Chocolate Bar" />
+                </div>
+                <div class="product-info">
+                    <h3>Snickers Chocolate Bar</h3>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <div class="price">Rs. 100 <span class="original-price">Rs. 120</span></div>
+                    <button class="add-to-cart" onclick="addToCart(4, 'Snickers Chocolate Bar', 100, 'snicker')">
+                        <i class="fas fa-cart-plus"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <div class="product" data-price="70" data-category="snacks">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/kirana/oreo.jpg') }}" alt="Oreo Chocolate Cookies" />
+                </div>
+                <div class="product-info">
+                    <h3>Oreo Chocolate Cookies</h3>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="price">Rs. 70</div>
+                    <button class="add-to-cart" onclick="addToCart(5, 'Oreo Chocolate Cookies', 70, 'oreo')">
+                        <i class="fas fa-cart-plus"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <div class="product" data-price="20" data-category="chocolate">
+                <div class="badge hot">HOT SALE</div>
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/kirana/dairymilk.jpg') }}" alt="Dairy Milk Chocolate" />
+                </div>
+                <div class="product-info">
+                    <h3>Dairy Milk Chocolate</h3>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="price">Rs. 20</div>
+                    <button class="add-to-cart" onclick="addToCart(6, 'Dairy Milk Chocolate', 20, 'dairymilk')">
+                        <i class="fas fa-cart-plus"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <div class="product" data-price="100" data-category="beverages">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/kirana/coke.jpg') }}" alt="Coca Cola 1.5L" />
+                </div>
+                <div class="product-info">
+                    <h3>Coca Cola 1.5L</h3>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <div class="price">Rs. 100</div>
+                    <button class="add-to-cart" onclick="addToCart(7, 'Coca Cola 1.5L', 100, 'coke')">
+                        <i class="fas fa-cart-plus"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <div class="product" data-price="50" data-category="chocolate">
+                <div class="badge super">SUPER SALE</div>
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/kirana/kitkat.jpg') }}" alt="KitKat Chocolate" />
+                </div>
+                <div class="product-info">
+                    <h3>KitKat Chocolate</h3>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="price">Rs. 50 <span class="original-price">Rs. 60</span></div>
+                    <button class="add-to-cart" onclick="addToCart(8, 'KitKat Chocolate', 50, 'kitkat')">
+                        <i class="fas fa-cart-plus"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <div class="product" data-price="200" data-category="breakfast">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/kirana/oats.jpg') }}" alt="Premium Oats 500g" />
+                </div>
+                <div class="product-info">
+                    <h3>Premium Oats 500g</h3>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="price">Rs. 200</div>
+                    <button class="add-to-cart" onclick="addToCart(9, 'Premium Oats 500g', 200, 'oats')">
+                        <i class="fas fa-cart-plus"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <div class="product" data-price="25" data-category="breakfast">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/kirana/waiwai.jpg') }}" alt="Wai Wai Noodles" />
+                </div>
+                <div class="product-info">
+                    <h3>Wai Wai Noodles</h3>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="price">Rs. 25</div>
+                    <button class="add-to-cart" onclick="addToCart(10, 'Wai Wai Noodles', 25, 'waiwai')">
+                        <i class="fas fa-cart-plus"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <div class="product" data-price="2000" data-category="breakfast">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/kirana/basmatirice.jpg') }}" alt="Premium Jeera Rice 25kg" />
+                </div>
+                <div class="product-info">
+                    <h3>Premium Jeera Rice 25kg</h3>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="price">Rs. 2000</div>
+                    <button class="add-to-cart" onclick="addToCart(11, 'Premium Jeera Rice 25kg', 2000, 'basmatirice')">
+                        <i class="fas fa-cart-plus"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <div class="product" data-price="490" data-category="breakfast">
+                <div class="badge hot">HOT SALE</div>
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/kirana/horlicks.jpg') }}" alt="Horlicks Health Drink" />
+                </div>
+                <div class="product-info">
+                    <h3>Horlicks Health Drink</h3>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="price">Rs. 490 <span class="original-price">Rs. 550</span></div>
+                    <button class="add-to-cart" onclick="addToCart(12, 'Horlicks Health Drink', 490, 'horlicks')">
+                        <i class="fas fa-cart-plus"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-btn" id="chatBtn">
+        <i class="fas fa-comments"></i>
+    </div>
+
+    <div class="message-box" id="messageBox">
+        <div class="message-header">
+            <h3>Customer Support</h3>
+            <button class="close-btn" id="closeBtn">&times;</button>
+        </div>
+        <div class="message-content" id="messageContent">
+            <div class="message admin">
+                <p>Hello! Welcome to Thapa Gas and Kirana Pasal. How can I assist you today?</p>
+            </div>
+        </div>
+        <div class="message-input">
+            <input type="text" id="messageInput" placeholder="Type your message here..." />
+            <button id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Koteshwor-32, Kathmandu</p>
+                <p><i class="fas fa-phone"></i> +977 98XXXXXXXX</p>
+                <p><i class="fas fa-envelope"></i> info@thapakirana.com</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms & Conditions</a>
+                <a href="#contact">Contact Us</a>
+                <a href="#about">About Us</a>
+            </div>
+            <div class="footer-section">
+                <h3>Opening Hours</h3>
+                <p>Monday - Saturday: 7:00 AM - 10:00 PM</p>
+                <p>Sunday: 8:00 AM - 9:00 PM</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Thapa Gas and Kirana Pasal. All rights reserved.</p>
+            <p>Designed with ❤️ in Nepal</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
